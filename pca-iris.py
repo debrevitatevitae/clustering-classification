@@ -6,7 +6,41 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
 
 
 if __name__ == '__main__':
 	np.random.seed(0)
+
+	#%% Load dataset and split
+	iris = load_iris()
+	X = iris.data
+	y = iris.target
+
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+
+	#%% Plot the first 3 features of the training data, distinguishing the labels
+	# 0: setosa, 1: versicolour, 2: virginica
+	setosa = y_train==0
+	versicolour = y_train==1
+	virginica = y_train==2
+	
+	X_setosa = X_train[setosa]
+	X_versicolour = X_train[versicolour]
+	X_virginica = X_train[virginica]
+	y_setosa = y_train[setosa]
+	y_versicolour = y_train[versicolour]
+	y_virginica = y_train[virginica]
+
+	fig = plt.figure()
+	ax = fig.add_subplot(projection='3d')
+	ax.scatter(X_setosa[:,0], X_setosa[:,1], X_setosa[:,2], y_setosa, label='setosa')
+	ax.scatter(X_versicolour[:,0], X_versicolour[:,1], X_versicolour[:,2], y_versicolour, label='versicolour')
+	ax.scatter(X_virginica[:,0], X_virginica[:,1], X_virginica[:,2], y_virginica, label='virginica')
+	ax.set_xlabel('Sepal length')
+	ax.set_ylabel('Sepal width')
+	ax.set_zlabel('Petal length')
+	ax.set_title('Training data')
+	ax.legend()
+	plt.show()
