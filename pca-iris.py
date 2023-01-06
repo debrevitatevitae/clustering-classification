@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
+from utils import compute_pca, plot_singular_values
+
 
 if __name__ == '__main__':
 	np.random.seed(0)
@@ -42,5 +44,33 @@ if __name__ == '__main__':
 	ax.set_ylabel('Sepal width')
 	ax.set_zlabel('Petal length')
 	ax.set_title('Training data')
+	ax.legend()
+	plt.show()
+
+	#%% Do the PCA of the train data and plot the singular values
+	U, s, VT = compute_pca(X_train)
+	V = VT.T
+	plot_singular_values(s)
+	print(U.shape)
+	print(s.shape)
+	print(VT.shape)
+
+	#%% Plot the data along the first two principal components
+	X_pc2 = V[:, :2]
+
+	X_pc2_setosa = X_pc2[setosa]
+	X_pc2_versicolour = X_pc2[versicolour]
+	X_pc2_virginica = X_pc2[virginica]
+	print(len(X_pc2_setosa))
+	print(len(X_pc2_versicolour))
+	print(len(X_pc2_virginica))
+
+	fig, ax = plt.subplots()
+	ax.scatter(X_pc2_setosa[:,0], X_pc2_setosa[:,1], label='setosa')
+	ax.scatter(X_pc2_versicolour[:,0], X_pc2_versicolour[:,1], label='versicolour')
+	ax.scatter(X_pc2_virginica[:,0], X_pc2_virginica[:,1], label='virginica')
+	ax.set_xlabel('PC 1')
+	ax.set_ylabel('PC 2')
+	ax.set_title('Training data along the first two principal components')
 	ax.legend()
 	plt.show()
