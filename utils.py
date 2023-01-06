@@ -29,7 +29,7 @@ def compute_pca(X:np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
 	"""
 	n, _ = X.shape
 	B = subtract_average(X)
-	return np.linalg.svd(B.T / np.sqrt(n))
+	return np.linalg.svd(B.T / np.sqrt(n), full_matrices=False)
 
 def plot_singular_values(s:np.ndarray) -> None:
 	_, axs = plt.subplots(1, 2)
