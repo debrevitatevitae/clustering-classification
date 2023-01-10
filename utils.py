@@ -43,8 +43,8 @@ def assign_datapoint_to_cluster(point:np.ndarray, means:List[np.ndarray]) -> int
 	"""Assigns a datapoint to one among K clusters.
 
 	Args:
-		point (np.ndarray): Shape = (n, m). Datapoint.
-		means (List[np.ndarray]): list of K means (coordinates).
+		point (np.ndarray): Shape = (n,). Datapoint.
+		means (List[np.ndarray]): list of K means (coordinates, shape = (m,)).
 
 	Returns:
 		int: cluster between 0 and K to which the datapoint is assigned.
@@ -57,6 +57,20 @@ def assign_datapoint_to_cluster(point:np.ndarray, means:List[np.ndarray]) -> int
 			cluster = i+1
 			d_min = d
 	return cluster
+
+def cluster_dataset(data:np.ndarray, means:List[np.ndarray]) -> np.ndarray:
+	"""Assign each point in a data array to one of the clusters defined by the means.
+
+	Args:
+		data (np.ndarray): Shape = (n, m). Datapoints.
+		means (List[np.ndarray]): list of K means (coordinates, shape = (m,)).
+
+	Returns:
+		np.ndarray: Shape = (n,). Clusters for each datapoint.
+	"""
+	n, _ = data.shape
+	clusters = [assign_datapoint_to_cluster(data[i], means) for i in range(n)]
+	return np.array(clusters)
 
 if __name__ == '__main__':
 	pass
