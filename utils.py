@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import List, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -39,6 +39,24 @@ def plot_singular_values(s:np.ndarray) -> None:
 	axs[1].set(xlabel='id', ylabel='cumsum', title="Cumulative sum of singular values")
 	plt.show()
 
+def assign_datapoint_to_cluster(point:np.ndarray, means:List[np.ndarray]) -> int:
+	"""Assigns a datapoint to one among K clusters.
+
+	Args:
+		point (np.ndarray): Shape = (n, m). Datapoint.
+		means (List[np.ndarray]): list of K means (coordinates).
+
+	Returns:
+		int: cluster between 0 and K to which the datapoint is assigned.
+	"""
+	d_min = np.linalg.norm(point - means[0])
+	cluster = 0
+	for i, m in enumerate(means[1:]):
+		d = np.linalg.norm(point - m)
+		if d < d_min:
+			cluster = i+1
+			d_min = d
+	return cluster
 
 if __name__ == '__main__':
 	pass
