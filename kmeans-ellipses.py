@@ -25,14 +25,29 @@ if __name__ == '__main__':
 	np.random.seed(0)
 
 	#%% Generate data
+	# Generate the two ellipses
 	n=200
 	X0 = generate_ellipse(n//2, [2., 1.])
 	X1 = generate_ellipse(n//2, [2., 1.], center=[1., -2.], rot=np.pi/4)
 
+	# Plot the ellipses
 	fig, ax = plt.subplots()
 	ax.scatter(X0[:, 0], X0[:, 1], marker='o', label='cluster 0')
 	ax.scatter(X1[:, 0], X1[:, 1], marker='o', label='cluster 1')
 	ax.legend()
 	plt.show()
+
+	# Assign the data to two clusters
+	y0 = np.zeros(X0.size)
+	y1 = np.ones(X1.size)
+
+	# Concatenate data and assignments
+	X = np.concatenate(X0, X1, axis=0)
+	y = np.concatenate(y0, y1, axis=0)
+
+	# Randomly permute data and assignments
+	idxs = np.random.permutation(n)
+	X = X[idxs]
+	y = y[idxs]
 
 	
