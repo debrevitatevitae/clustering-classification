@@ -24,7 +24,7 @@ def generate_ellipse(n:int, axes:np.ndarray, center=np.array([0., 0.]), rot:floa
 if __name__ == '__main__':
 	np.random.seed(0)
 
-	#%% Generate data
+	#%% Generate data and split into train and test sets
 	# Generate the two ellipses
 	n=200
 	X0 = generate_ellipse(n//2, [2., 1.])
@@ -50,4 +50,7 @@ if __name__ == '__main__':
 	X = X[idxs]
 	y = y[idxs]
 
-	
+	# Split in train and test sets
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+	#%% Cluster in k means
