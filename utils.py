@@ -82,7 +82,7 @@ def update_means(data:np.ndarray, clusters:np.ndarray) -> List[np.ndarray]:
 	Returns:
 		List[np.ndarray]: list of means per cluster (coordinates, shape = (m,)).
 	"""
-	K = int(clusters.max + 1)
+	K = int(clusters.max() + 1)
 	means=[]
 	for i in range(K):
 		Xi = data[clusters==i]
@@ -101,17 +101,17 @@ def compute_scd(data:np.ndarray, clusters:np.ndarray, means:List[np.ndarray]) ->
 	Returns:
 		float: scd value
 	"""
-	n, _ = data.shape
-	K = int(clusters.max + 1)
+	K = int(clusters.max() + 1)
 	scd=0.
 	for i in range(K):
 		Xi = data[clusters==i]
+		ni, _ = Xi.shape
 		mi = np.mean(Xi, axis=0)
-		for j in range(n):
+		for j in range(ni):
 			scd += np.linalg.norm(Xi[j]-mi)
 	return scd
 
-def lloyd_kmeans_clustering(data:np.ndarray, means_init:List[np.ndarray], tol:float=1e-4, max_iter:int=1000, verbose:bool=False) -> Tuple[List[np.ndarray], List[float]]:
+def lloyd_kmeans_clustering(data:np.ndarray, means_init:List[np.ndarray], tol:float=1e-5, max_iter:int=1000, verbose:bool=False) -> Tuple[List[np.ndarray], List[float]]:
 	"""Performs k-means clustering following S. LLoyd's algorithm (1957) and returns the final means and the history of the sum of in-cluster distances.
 
 	Args:
@@ -137,7 +137,7 @@ def lloyd_kmeans_clustering(data:np.ndarray, means_init:List[np.ndarray], tol:fl
 		if np.all(np.abs(np.array(means_old)-np.array(means_new)) < tol):
 			print("The means change went below tolerance. Exiting the update loop...")
 			break
-		
+
 		means_old = means_new
 	return means_new, scd_history
 
