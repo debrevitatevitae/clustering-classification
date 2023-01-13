@@ -112,7 +112,7 @@ def compute_scd(data:np.ndarray, clusters:np.ndarray, means:List[np.ndarray]) ->
 	return scd
 
 def lloyd_kmeans_clustering(data:np.ndarray, means_init:List[np.ndarray], tol:float=1e-5, max_iter:int=1000, verbose:bool=False) -> Tuple[List[np.ndarray], List[float]]:
-	"""Performs k-means clustering following S. LLoyd's algorithm (1957) and returns the final means and the history of the sum of in-cluster distances.
+	"""Performs k-means clustering following S. Lloyd's algorithm (1957) and returns the final means and the history of the sum of in-cluster distances.
 
 	Args:
 		data (np.ndarray): Shape = (n, m). Datapoints.
