@@ -8,6 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+import sklearn.svm as svm
 
 from utils import compute_pca
 
@@ -48,3 +50,16 @@ if __name__ == '__main__':
     plot_iris_2_class_2_pcs(axs[1], X_test, y_test, title="Test points of Iris")
     fig.tight_layout()
     plt.show()
+
+    #%% Scale the data
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+
+    #%% Fit the svm
+    classifier = svm.LinearSVC()
+    classifier.fit(X_train_scaled, y_train)
+    w_opt = classifier.coef_
+    print(w_opt)
+
+    #%% Plot the separating hyperplane
+    
