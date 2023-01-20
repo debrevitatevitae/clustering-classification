@@ -57,6 +57,15 @@ def plot_hyperplane_2pcs(axis, w, b, U):
     axis.set_ylabel('PC 2')
     axis.legend()
     return
+
+def plot_supp_vecs_2pcs(axis, X_sv, U):
+    X_sv_pc = np.transpose(U.T @ X_sv.T)
+    X_sv_pc2 = X_sv_pc[:, :2]
+    axis.scatter(X_sv_pc2[:, 0], X_sv_pc2[:, 1], s=100, facecolor="None", edgecolor='red', label='supp. vecs')
+    axis.set_xlabel('PC 1')
+    axis.set_ylabel('PC 2')
+    axis.legend()
+    return
 	
 
 if __name__ == '__main__':
@@ -88,12 +97,12 @@ if __name__ == '__main__':
     X_test_scaled = scaler.transform(X_test)
 
     #%% Fit the svm
-    classifier = svm.LinearSVC()
+    classifier = svm.SVC(kernel='linear')
     classifier.fit(X_train_scaled, y_train)
     w_opt = classifier.coef_
     b_opt = classifier.intercept_
 
-    #%% Plot the separating hyperplane
+    #%% Plot the separating hyperplane on the principal components
     fig, axs = plt.subplots(1, 2)
     plot_iris_2_class_2_pcs(axs[0], X_train_scaled, y_train, U, title="Train points of Iris with hyperplane")
     plot_hyperplane_2pcs(axs[0], w_opt, b_opt, U)
@@ -102,4 +111,12 @@ if __name__ == '__main__':
     plot_hyperplane_2pcs(axs[1], w_opt, b_opt, U)
     axs[1].set_ylim([-2.5, 2.5])
     fig.tight_layout()
+    # plt.show()
+
+    #%% Plot the support vectors on the principal components
+    fig, ax = plt.subplots()
+    plot_iris_2_class_2_pcs(ax, X_train_scaled, y_train, U, title="Train points of Iris with hyperplane and SVs")
+    plot_hyperplane_2pcs(ax, w_opt, b_opt, U)
+    ax.set_ylim([-2.5, 2.5])
+    plot_supp_vecs_2pcs(ax, classifier.support_vectors_, U)
     plt.show()
