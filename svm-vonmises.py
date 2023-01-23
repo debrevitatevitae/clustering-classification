@@ -12,6 +12,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 import sklearn.svm as svm
 
+from utils import count_misclassifications
+
 
 def generate_vm_data_plane_principal_stresses(sig_yield:float, sig_ult:float, n:int=100) -> Tuple[np.ndarray, np.ndarray]:
     """Samples the uniform distribution below the ultimate strength in plane principal components and returns labeled data according to the Von Mises criterion. 
@@ -76,4 +78,10 @@ if __name__ == '__main__':
     plot_vm_data_plane_principal_stresses(axs[1, 1], X_test, y_test_pred, title='Test set, predicted')
     fig.suptitle("VM data: cfr with predictions of SVM, poly kernel, deg = 2", fontsize=12)
     fig.tight_layout()
-    plt.show()
+    # plt.show()
+
+    #%% Count the number of misclassified points
+    wrong_train = count_misclassifications(y_train_pred, y_train)
+    wrong_test = count_misclassifications(y_test_pred, y_test)
+    print(f"Number of misclassifications in the train set: {wrong_train:d}/{len(y_train):d}")
+    print(f"Number of misclassifications in the test set: {wrong_test:d}/{len(y_test):d}")
