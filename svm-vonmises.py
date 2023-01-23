@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib.axes import Axes
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 import sklearn.svm as svm
 
 
@@ -53,4 +53,27 @@ if __name__ == '__main__':
     X, y = generate_vm_data_plane_principal_stresses(sig_yield, sig_ultimate, n=200)
     fig, ax = plt.subplots()
     plot_vm_data_plane_principal_stresses(ax, X, y)
+    fig.tight_layout()
+    # plt.show()
+
+    #%% Split the data in a train and test set and scale the data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    scaler = MinMaxScaler(feature_range=(-1., 1.))
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+
+    #%% Fit an svm and predict on both train and test sets
+    clf  = svm.SVC(C=1., kernel='poly', degree=2, gamma='scale')
+    clf.fit(X_train, y_train)
+    y_train_pred = clf.predict(X_train)
+    y_test_pred = clf.predict(X_test)
+
+    #%% Plot the real data and predictions for train and test sets
+    fig, axs = plt.subplots(2, 2)
+    plot_vm_data_plane_principal_stresses(axs[0, 0], X_train, y_train, title='Train set, true')
+    plot_vm_data_plane_principal_stresses(axs[0, 1], X_train, y_train_pred, title='Train set, predicetd')
+    plot_vm_data_plane_principal_stresses(axs[1, 0], X_test, y_test, title='Test set, true')
+    plot_vm_data_plane_principal_stresses(axs[1, 1], X_test, y_test_pred, title='Test set, predicted')
+    fig.suptitle("VM data: cfr with predictions of SVM, poly kernel, deg = 2", fontsize=12)
+    fig.tight_layout()
     plt.show()
