@@ -141,5 +141,10 @@ def lloyd_kmeans_clustering(data:np.ndarray, means_init:List[np.ndarray], tol:fl
 		means_old = means_new
 	return means_new, scd_history
 
+def count_misclassifications(pred, ref):
+	mclass = pred != ref
+	mclass = mclass[mclass == True]
+	return len(mclass)
+
 if __name__ == '__main__':
 	pass
