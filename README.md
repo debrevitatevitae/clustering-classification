@@ -1,4 +1,4 @@
-# Simple Project
+# Clustering and classification scripts
 ## Scripts
 - `pca-iris.py`: prinicipal component analysis on the Iris dataset.
 - `kmeans-ellipses.py`: k-means clustetring of points belonging to two ellipses.
